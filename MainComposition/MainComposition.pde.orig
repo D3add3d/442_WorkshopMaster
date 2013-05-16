@@ -1,5 +1,3 @@
-import crayolon.portamod.*;
-
 AardvarkSim as;
 ArrayList<PParticleSystem> antHells;
 ArrayList<PVector> targets;
@@ -12,10 +10,14 @@ public NoteData incoming;
 SS_StarscapeManager starscapeManager;
 
 void setup() {
-
+<<<<<<< HEAD
   size(1024,768, P3D);
-  smooth();
   
+=======
+  size(1024, 768, JAVA2D);
+  smooth();
+
+>>>>>>> 804105344df02f9e55d192b606a29c3b2f149780
   as = new AardvarkSim();
   as.setup();
 
