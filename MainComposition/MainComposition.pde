@@ -13,16 +13,16 @@ SS_StarscapeManager starscapeManager;
 
 void setup() {
 
-  size(1024,768, P3D);
+  size(1024, 768, P3D);
   smooth();
-  
+
   as = new AardvarkSim();
   as.setup();
 
   setupTracker();
 
   setupAnts();
-  
+
   // Setup background
   starscapeManager = new SS_StarscapeManager(width, height);
 }
@@ -74,14 +74,14 @@ void update() {
 
 void draw() {
   // Draw background
-  image(starscapeManager.getCanvas(), 0,0);
-  
+  image(starscapeManager.getCanvas(), 0, 0);
+
   as.draw();
 
   AI bread;
   PParticleSystem ants;
   PVector target;
-  for (int i=0; i<as.breadsCount; ++i) {
+  for (int i=0; i< as.breads.size(); ++i) {
     bread = ((AI)as.breads.get(i));
     target = (PVector)targets.get(i);
 
@@ -91,15 +91,19 @@ void draw() {
     ants = (PParticleSystem)antHells.get(i);
     ants.updateAndDraw();
   }
-  
+
 
   runExplosion();
 }
 
 void mousePressed()
 {
-  if (!explosion.on) 
+  if (!explosion.on){ 
     explosion.reset(mouseX, mouseY);
+  }
+  
+  int targetBread = as.getNearestBread(new PVector(mouseX, mouseY));
+  as.eatBread(targetBread);
   explosion.on = true;
 }
 
@@ -120,3 +124,4 @@ void stop()
   tracker.stop();
   this.stop();
 } 
+

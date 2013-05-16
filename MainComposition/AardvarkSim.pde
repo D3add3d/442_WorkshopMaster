@@ -18,10 +18,14 @@ class AardvarkSim {
     this.breads.add(new AI("bread.png", (int) random(0, width), (int) random(height), (int) random(3, 6)));
   }
   
-  void eatBread(){
-    if(this.breads.size() > 0){
-      this.breads.remove( (int)floor( random(0, this.breads.size() )));
+  void eatBread(int targetBread){
+    if(targetBread != -1){
+      this.breads.remove( targetBread);
     }
+    
+//    if(this.breads.size() > 0){
+//      this.breads.remove( (int)floor( random(0, this.breads.size() )));
+//    }
   }
   
   int getNearestBread(PVector point){
@@ -50,7 +54,7 @@ class AardvarkSim {
   }
   
   void draw() {
-    for (int i = 0; i < this.breadsCount; i++) {
+    for (int i = 0; i < this.breads.size(); i++) {
        AI bread = (AI) this.breads.get(i); 
        
        bread.animate((int) this.animation_manager.pos.x, (int) this.animation_manager.pos.y);
