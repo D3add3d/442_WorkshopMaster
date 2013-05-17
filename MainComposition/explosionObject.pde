@@ -10,6 +10,7 @@ class Explosion {
   float energy;
   float tension;
   float energyinit;
+  float decay = 2;
 
   boolean allow;
   boolean build;
@@ -28,7 +29,7 @@ class Explosion {
 
     build = true;
     allow = false;
-
+   
     on = false;
   }
   void build() {
@@ -92,9 +93,9 @@ class Explosion {
           particle.speed.y = 0;
         }
 
-        energy -- ;
+        energy -= decay ;
 
-        if (energy == 0) {
+        if (energy <= 0) {
           allow = false;
           on = false;
         }

@@ -5,8 +5,12 @@ ArrayList<PParticleSystem> antHells;
 ArrayList<PVector> targets;
 
 Explosion explosion;
+
+//Music tracking vars
 PortaMod tracker;
 public NoteData incoming;
+int lastTrackerPattern;
+int speedIncrease = 3;
 
 // Background systems
 SS_StarscapeManager starscapeManager;
@@ -29,7 +33,7 @@ void setup() {
 
 void setupTracker() {
   tracker = new PortaMod(this);
-  tracker.doModLoad("syphus-oldendays.mod", true, 64);
+  tracker.doModLoad("sv_ttt.xm", true, 64);
 }
 
 
@@ -54,8 +58,8 @@ void setupAnts()
     antHells.add(ants);
   }
 
-  AI bread = ((AI)as.breads.get(0));
-  makeExplosion( bread.xPos, bread.yPos, 100, 10, 35);
+  //AI bread = ((AI)as.breads.get(0));
+  makeExplosion( 0, 0, 150, 10, 35);
 }
 
 void makeExplosion(float x, float y, int d, float r, float e) {
@@ -98,12 +102,11 @@ void draw() {
 
 void mousePressed()
 {
-  if (!explosion.on){ 
+  if (!explosion.on) { 
+    as.eatBreadAroundPoint(new PVector(mouseX, mouseY));
     explosion.reset(mouseX, mouseY);
   }
-  
-  int targetBread = as.getNearestBread(new PVector(mouseX, mouseY));
-  as.eatBread(targetBread);
+
   explosion.on = true;
 }
 
@@ -114,8 +117,22 @@ public void grabNewdata(PortaMod b) {
    channel, currentrealrow, currentrow, currentseq, effect,
    effparam, inst, note, seqlength, timestamp, vol
    */
-  if (incoming.channel == 0) {
-    println(incoming.currentrealrow + "   " + tracker.noteConvert(incoming.note));
+  if (incoming.currentseq > lastTrackerPattern) {
+    tracker.setTempo(tracker.bpmvalue+speedIncrease);
+  }
+  
+  lastTrackerPattern = incoming.currentseq;
+  
+  if(incoming.currentseq > 0){
+    if (incoming.channel == 1 || incoming.channel == 2) {
+      String note = tracker.noteConvert(incoming.note);
+      if(note != "- -"){
+        println(incoming.currentrealrow + "   " + note);
+        if(!as.bakeBread()){
+          //Trigger Wormhole
+        }
+      }
+    }
   }
 }
 
